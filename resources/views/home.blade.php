@@ -23,9 +23,9 @@
             @if ($posts->isNotEmpty())
                 @foreach($posts as $post)
                     <div class="col-md-4">
-                        <div class="card">
+                        <div class="card" style="margin-bottom: 10px;">
                             <div class="card-header">
-                                <a href="/ads/{{$post->id}}">{{ $post->title }}</a>
+                                <a href="/posts/{{$post->id}}">{{ $post->title }}</a>
                             </div>
 
                             <div class="card-body">
