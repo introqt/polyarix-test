@@ -1,3 +1,3 @@
-This repo contains test tasks for Polyarix
+This branch contains task 3.
 
-Switch branches to see different tasks
+Edit src/config.php for database connection, then run index.php.
