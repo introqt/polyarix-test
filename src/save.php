@@ -31,9 +31,9 @@ $stmt = $link->prepare("INSERT INTO " . table . " (name, usd, uah) VALUES (?, ?,
 $stmt->bind_param("sss", $name, $usd, $uah);
 
 // set parameters and execute
-$name = $_POST['name'];
-$usd = $_POST['dollars'];
-$uah = $_POST['uah-equivalent'];
+$name = htmlspecialchars(strip_tags($_POST['name']));
+$usd = htmlspecialchars(strip_tags($_POST['dollars']));
+$uah = htmlspecialchars(strip_tags($_POST['uah-equivalent']));
 $stmt->execute();
 
 echo "<h4>${name}, your exchange has been saved!</h4>";
