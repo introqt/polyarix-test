@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SavePostRequest;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -65,15 +66,22 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
-    }
+        if (Auth::user()->can('change', $post)) {
+            return view('posts.edit', compact('post'));
+        }
 
+        return abort(403, 'Anauthorized action.');
+    }
 
     public function update(SavePostRequest $request, Post $post)
     {
-        $post->update($request->all());
+        if (Auth::user()->can('change', $post)) {
+            $post->update($request->all());
 
-        return redirect(route('posts.show', ['id' => $post->id]));
+            return redirect(route('posts.show', ['id' => $post->id]));
+        }
+
+        return abort(403, 'Anauthorized action.');
     }
 
     /**
@@ -82,7 +90,11 @@ class PostsController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
-        return redirect('home');
+        if (Auth::user()->can('change', $post)) {
+            $post->delete();
+            return redirect('home');
+        }
+
+        return abort(403, 'Anauthorized action.');
     }
 }
