@@ -31,7 +31,7 @@
                             <div class="card-body">
                                 <p>{{ $post->description }}</p>
                                 <br>
-                                <p>Posted by {{ $post->user->username }} {{ $post->created_at }}</p>
+                                <p>Posted by {{ $post->user->name }} {{ $post->created_at }}</p>
                             </div>
 
                             @include('layouts.buttons')
