@@ -13,7 +13,7 @@
 <div class="container">
     <div class="row">
         <h3>Exchange</h3>
-    </div>w
+    </div>
     <div class="row">
         <form METHOD="post" action="src/save.php">
             <div class="form-group">
