@@ -1,3 +1,5 @@
-This branch contains task 3.
+This branch contains task 2.
 
-Edit src/config.php for database connection, then run index.php.
+This is only the representation of CRUD class on plain PHP.
+
+There was not enough time to make a completed example with usage of this class (not described in task though).

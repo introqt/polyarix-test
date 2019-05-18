@@ -6,41 +6,91 @@ class Post
     private $table_name = "posts";
     public $id;
     public $name;
-    public $price;
     public $description;
-    public $category_id;
-    public $timestamp;
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // create post
-    function create()
+    // get all posts
+    public function index()
     {
-        $query = "INSERT INTO " . $this->table_name . "SET name=:name, price=:price, description=:description, category_id=:category_id, created=:created";
+        $query = "SELECT
+                id, name, description
+            FROM
+                " . $this->table_name . "
+            ORDER BY
+                name ASC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    // create new post
+    public function create()
+    {
+        $query = "INSERT INTO " . $this->table_name . "SET name=:name, description=:description";
         $stmt = $this->conn->prepare($query);
 
         $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->price = htmlspecialchars(strip_tags($this->price));
         $this->description = htmlspecialchars(strip_tags($this->description));
-        $this->category_id = htmlspecialchars(strip_tags($this->category_id));
-
-        $this->timestamp = date('Y-m-d H:i:s');
 
         // bind values
         $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":price", $this->price);
         $stmt->bindParam(":description", $this->description);
-        $stmt->bindParam(":category_id", $this->category_id);
-        $stmt->bindParam(":created", $this->timestamp);
 
         if ($stmt->execute()) {
             return true;
         } else {
             return false;
         }
+    }
 
+    // update existing post
+    public function update()
+    {
+        $query = "UPDATE " . $this->table_name . "
+            SET
+                name = :name,
+                description = :description,
+            WHERE
+                id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        // posted values
+        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->description = htmlspecialchars(strip_tags($this->description));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        // bind parameters
+        $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':description', $this->description);
+        $stmt->bindParam(':id', $this->id);
+
+        // execute the query
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // delete post
+    public function delete()
+    {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+
+        if ($result = $stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
